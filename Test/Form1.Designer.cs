@@ -93,7 +93,7 @@
             playerPictureBox.Image = Properties.Resources.player_idle;
             playerPictureBox.Location = new Point(353, 55);
             playerPictureBox.Name = "playerPictureBox";
-            playerPictureBox.Size = new Size(38, 40);
+            playerPictureBox.Size = new Size(38, 38);
             playerPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             playerPictureBox.TabIndex = 1;
             playerPictureBox.TabStop = false;

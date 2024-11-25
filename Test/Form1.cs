@@ -44,8 +44,10 @@ namespace Test
             strengthIcon = Properties.Resources.strength_icon;
             speedIcon = Properties.Resources.speed_icon;
 
-            mazeBitmap = new Bitmap(650, 650);
-            mazeBitmap = Properties.Resources.maze_stage1_transparent;
+            Bitmap temp = new Bitmap(Properties.Resources.maze_stage1_transparent);
+            mazeBitmap = new Bitmap(temp, new Size(650, 650));
+
+            playerBitmap = new Bitmap(Properties.Resources.player_idle);
 
             moveUp = new Bitmap(Properties.Resources.player_run_up);
             moveDown = new Bitmap(Properties.Resources.player_run_down);
@@ -55,22 +57,13 @@ namespace Test
 
         public void InitializeGame()
         {
-
-            //mazePictureBox.Location = new Point((ClientSize.Width - mazePictureBox.Width) / 2, (ClientSize.Height - mazePictureBox.Height) / 2);
-
-            if (mazeGrid == null)
-            {
-                mazeGrid = ConvertToGrid(mazeBitmap);
-            }
+            mazeGrid = ConvertToGrid(mazeBitmap);
             mazePictureBox.Image = mazeBitmap;
 
-            playerBitmap = new Bitmap(Properties.Resources.player_idle);
             playerPictureBox.Image = playerBitmap;
-            //mazePictureBox.Controls.Add(playerPictureBox);
-            //this.Controls.Add(playerPictureBox);
 
-            //Point spawnPoint = GetStartingPoint();
-            //playerPictureBox.Location = new Point(tileSize, tileSize);
+            mazePictureBox.Controls.Add(playerPictureBox);
+
             playerPictureBox.Location = GetStartingPoint();
 
             timer = new System.Windows.Forms.Timer();
@@ -104,7 +97,8 @@ namespace Test
             return grid;
         }
 
-        private Point GetStartingPoint() {
+        private Point GetStartingPoint()
+        {
             int mazeStartX = mazePictureBox.Location.X;
             int mazeStartY = mazePictureBox.Location.Y;
 
@@ -114,10 +108,13 @@ namespace Test
                         playerX = x;
                         playerY = y;
 
-                        int pixelX = mazeStartX + x * tileSize + (tileSize - playerPictureBox.Width) / 2;
-                        int pixelY = mazeStartY + y * tileSize + (tileSize - playerPictureBox.Height) / 2;
+                        int pixelX = mazeStartX + x * tileSize + (tileSize / 2 - playerPictureBox.Width / 2);
+                        int pixelY = mazeStartY + y * tileSize + (tileSize / 2 - playerPictureBox.Width / 2);
 
-                        return new Point(pixelX, pixelY);
+                        return new Point(
+                            x * tileSize + (tileSize - playerPictureBox.Width) / 2,
+                            y * tileSize + (tileSize - playerPictureBox.Height) / 2
+                        );
                     }
                 }
             }
@@ -201,12 +198,9 @@ namespace Test
 
         private void UpdatePlayerVisual()
         {
-            int startX = mazePictureBox.Location.X;
-            int startY = mazePictureBox.Location.Y;
-
             playerPictureBox.Location = new Point(
-                startX + playerX * tileSize + (tileSize - playerPictureBox.Width) / 2,
-                startY + playerY * tileSize + (tileSize - playerPictureBox.Height) / 2
+                playerX * tileSize + (tileSize - playerPictureBox.Width) / 2,
+                playerY * tileSize + (tileSize - playerPictureBox.Height) / 2
             );
         }
 
